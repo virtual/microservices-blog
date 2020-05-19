@@ -4,13 +4,13 @@ const app = express();
 app.use(bodyParser.json());
 const { randomBytes } = require('crypto')
 
-const posts = {};
+const posts = {}; // POST actually builds out this object in local storage
 
-app.get('/post', (req, res) => {
+app.get('/posts', (req, res) => {
   res.send(posts)
 })
 
-app.post('/post', (req, res) => {
+app.post('/posts', (req, res) => {
   const {title} = req.body;
   const id = randomBytes(4).toString('hex');
   posts[id] = {
