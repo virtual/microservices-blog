@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser')
+const { randomBytes } = require('crypto')
+const cors = require('cors');
+
 const app = express();
 app.use(bodyParser.json());
-const { randomBytes } = require('crypto')
+app.use(cors());
 
 const posts = {}; // POST actually builds out this object in local storage
 

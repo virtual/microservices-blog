@@ -23,3 +23,11 @@ __Posts__
 __Comments__
 - Create a comment
 - List all comments
+
+## Determine React component hierarchy
+
+- App
+  - PostList
+    - CommentList
+    - CommentCreate
+  - PostCreate
