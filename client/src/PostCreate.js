@@ -1,5 +1,5 @@
 import React,{ useState } from 'react';
-const axios = require('axios');
+import axios from 'axios';
 
 const PostCreate = () => {
   const [ title, setTitle ] = useState('');
