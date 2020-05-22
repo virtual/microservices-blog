@@ -23,7 +23,7 @@ app.post('/posts/:id/comments', (req, res) => {
 
   comments.push({
     id: commentId,
-    content
+    content: req.body.content
   });
 
   commentsByPostId[req.params.id] = comments;
