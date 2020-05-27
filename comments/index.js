@@ -30,7 +30,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   commentsByPostId[req.params.id] = comments; // save comment
 
   await axios.post('http://localhost:4005/events', {
-    type: 'CommentCreate',
+    type: 'CommentCreated',
     data: {
       id: commentId,
       content,
@@ -41,6 +41,12 @@ app.post('/posts/:id/comments', async (req, res) => {
   res.status(201).send(comments)
 
 });
+
+// receives any event coming from event bus
+app.post('/events', (req,res) => {
+  console.log('Received event ', req.body.type);
+  res.send({})
+})
 
 app.listen(4001, ()=>{
   console.log('Comments listening on 4001')

@@ -31,3 +31,9 @@ __Comments__
     - CommentList
     - CommentCreate
   - PostCreate
+
+## Create the event bus / query services
+- Listen for events
+- Change React app to look at query for posts/comments for READing data only
+- Posts and Comments services are still used for creating
+- Instead of passing the post ID to the CommentsList component, pass the post object returned from query service
