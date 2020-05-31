@@ -17,9 +17,13 @@ const CommentList = ({comments}) => {
   
   // Object.values is a built-in JS function to return array
   const renderedComments = comments.map(comment => {
+    let content;
+    if (comment.status === 'approved') { content = comment.content }
+    else if (comment.status === 'pending') { content = "This comment is pending approval" }
+    else if (comment.status === 'rejected') { content = "This comment has been rejected" }
     return (
     <li 
-    key={comment.id}>{comment.content}</li>
+    key={comment.id}>{content}</li>
     );
   })
   return(
