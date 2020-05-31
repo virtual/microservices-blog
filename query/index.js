@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// Dont need axios since it won't need to emit events?
+const axios = require('axios');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,17 +12,9 @@ app.use(cors());
 // Decide on a data structure for all the comments
 const posts = {};
 
-app.get('/posts', (req, res) => {
-  res.send(posts);
-});
-
-// receives events from event bus
-app.post('/events', (req, res) => {
-  const { type, data } = req.body;
-
+const handleEvents = (type, data) => {
   if (type === 'PostCreated') {
     const { id, title } = data;
-
     posts[id] = { id, title, comments: [] };
   }
   
@@ -43,7 +35,19 @@ app.post('/events', (req, res) => {
     comment.status = status;
     comment.content = content;
   }
-  
+}
+
+app.get('/posts', (req, res) => {
+  res.send(posts);
+});
+
+// receives events from event bus
+app.post('/events', (req, res) => {
+  const { type, data } = req.body;
+
+  // Move all if statements into a helper function
+  handleEvents( type, data );
+
   // Node doesn't show content of nested structures 
   // to save on output clutter
   // console.log(posts);
@@ -51,6 +55,16 @@ app.post('/events', (req, res) => {
   res.send({});
 });
 
-app.listen(4002, ()=>{
-  console.log("Query service listening on 4002")
+app.listen(4002, async ()=>{
+  console.log("Query service listening on 4002");
+
+  // Each time service comes online
+  // Make a request over to event bus
+  // and get a listing of the events that have been emitted
+  const res = await axios.get('http://localhost:4005/events');
+
+  for (let event of res.data) {
+    console.log("Processing event: ", event.type);
+    handleEvents(event.type, event.data);
+  }
 })
