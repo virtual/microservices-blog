@@ -27,6 +27,7 @@ const handleEvent = (type, data) => {
   if (type === 'CommentUpdated') {
     const { id, content, postId, status } = data;
 
+    const post = posts[postId];
     const comment = post.comments.find(comment => {
       return comment.id === id;
     });
