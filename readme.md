@@ -37,3 +37,10 @@ __Comments__
 - Change React app to look at query for posts/comments for READing data only
 - Posts and Comments services are still used for creating
 - Instead of passing the post ID to the CommentsList component, pass the post object returned from query service
+
+## Deployments
+- Create Dockerfile in each (query, posts, etc) service folder
+- Push Docker images to Docker hub
+- Create depl.yaml files for each K8s config; has K8s Service and Deployment information for each
+- Add Ingress (`ingress-nginx`) for communication between clusters/pods and Load Balancer
+- Add localhost host routes to /etc/host
