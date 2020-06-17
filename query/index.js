@@ -12,7 +12,7 @@ app.use(cors());
 // Decide on a data structure for all the comments
 const posts = {};
 
-const handleEvents = (type, data) => {
+const handleEvent = (type, data) => {
   if (type === 'PostCreated') {
     const { id, title } = data;
     posts[id] = { id, title, comments: [] };
@@ -26,7 +26,6 @@ const handleEvents = (type, data) => {
 
   if (type === 'CommentUpdated') {
     const { id, content, postId, status } = data;
-    const post = posts[postId];
 
     const comment = post.comments.find(comment => {
       return comment.id === id;
@@ -41,17 +40,12 @@ app.get('/posts', (req, res) => {
   res.send(posts);
 });
 
-// receives events from event bus
 app.post('/events', (req, res) => {
   const { type, data } = req.body;
 
   // Move all if statements into a helper function
-  handleEvents( type, data );
+  handleEvent( type, data );
 
-  // Node doesn't show content of nested structures 
-  // to save on output clutter
-  // console.log(posts);
-  // Still a route handle so be sure to return something
   res.send({});
 });
 
@@ -61,10 +55,10 @@ app.listen(4002, async ()=>{
   // Each time service comes online
   // Make a request over to event bus
   // and get a listing of the events that have been emitted
-  const res = await axios.get('http://event-bus-src:4005/events');
+  const res = await axios.get('http://event-bus-srv:4005/events');
 
   for (let event of res.data) {
     console.log("Processing event: ", event.type);
-    handleEvents(event.type, event.data);
+    handleEvent(event.type, event.data);
   }
 })
