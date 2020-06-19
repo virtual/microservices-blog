@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/* # auto applies config file updates
+build:
+  local:
+    push: false # auto pushes to Docker hub if true
+  artifacts:
+    - image: satinflame/client
+      context: client
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: satinflame/comments
+      context: comments
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: satinflame/event-bus
+      context: event-bus
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: satinflame/moderation
+      context: moderation
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: satinflame/posts
+      context: posts
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .            
+    - image: satinflame/query
+      context: query
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .      

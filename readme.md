@@ -44,3 +44,7 @@ __Comments__
 - Create depl.yaml files for each K8s config; has K8s Service and Deployment information for each
 - Add Ingress (`ingress-nginx`) for communication between clusters/pods and Load Balancer
 - Add localhost host routes to /etc/host
+
+## Skaffod
+- Install Skaffold
+- Run with `skaffold dev`
